@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "ingreso-egreso-app-300c3": {
+      "hosting": {
+        "ingresoEgreso": [
+          "ingreso-egreso-app-300c3"
+        ]
+      }
+    }
+  }
+}
