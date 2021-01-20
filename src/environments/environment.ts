@@ -5,15 +5,14 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyB6-pPedeQetHSLBRGIDbrKGcnxOIvmii0",
-    authDomain: "ingreso-egreso-app-300c3.firebaseapp.com",
-    databaseURL: "https://ingreso-egreso-app-300c3-default-rtdb.firebaseio.com",
-    projectId: "ingreso-egreso-app-300c3",
-    storageBucket: "ingreso-egreso-app-300c3.appspot.com",
-    messagingSenderId: "132788090980",
-    appId: "1:132788090980:web:31a11af94abe654bdc4771",
-    measurementId: "G-HNHXW2X0MH",
-  },
+    apiKey: 'AIzaSyBxK6eNwHoAKYBGDW3cUlhLaGytNIOiWcs',
+    authDomain: 'ingreso-egreso-app.firebaseapp.com',
+    databaseURL: 'https://ingreso-egreso-app.firebaseio.com',
+    projectId: 'ingreso-egreso-app',
+    storageBucket: 'ingreso-egreso-app.appspot.com',
+    messagingSenderId: '577324738477',
+    appId: '1:577324738477:web:e35aca0665073e12d02324'
+  }
 };
 
 /*

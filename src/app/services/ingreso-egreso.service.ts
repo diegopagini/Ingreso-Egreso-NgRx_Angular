@@ -1,41 +1,50 @@
-import { Injectable } from "@angular/core";
-import { AngularFirestore } from "@angular/fire/firestore";
-import { map } from "rxjs/operators";
-import { IngresoEgreso } from "../models/ingreso-egreso.model";
-import { AuthService } from "./auth.service";
+import { Injectable } from '@angular/core';
+
+import 'firebase/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { IngresoEgreso } from '../models/ingreso-egreso.model';
+import { AuthService } from './auth.service';
+
+import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class IngresoEgresoService {
-  constructor(
-    private firestore: AngularFirestore,
-    private authService: AuthService
-  ) {}
 
-  crearIngresoEgreso(ingresoEgreso: IngresoEgreso) {
-    return this.firestore
-      .doc(`${this.authService.user.uid}/ingreso-egreso`)
-      .collection("items")
-      .add({ ...ingresoEgreso });
+  constructor( private firestore: AngularFirestore,
+               private authService: AuthService ) { }
+
+  crearIngresoEgreso( ingresoEgreso: IngresoEgreso ) {
+    const uid = this.authService.user.uid;
+
+    delete ingresoEgreso.uid;
+
+    return this.firestore.doc(`${ uid }/ingresos-egresos`)
+        .collection('items')
+        .add({ ...ingresoEgreso });
+
   }
 
   initIngresosEgresosListener(uid: string) {
-    this.firestore
-      .collection(`${uid}/ingresos-egresos/items`)
+
+    return this.firestore.collection(`${ uid }/ingresos-egresos/items`)
       .snapshotChanges()
       .pipe(
-        map((snapshot) => {
-          return snapshot.map((doc) => {
-            return {
+        map( snapshot => snapshot.map( doc => ({
               uid: doc.payload.doc.id,
-              ...(doc.payload.doc.data() as any),
-            };
-          });
-        })
-      )
-      .subscribe((algo) => {
-        console.log(algo);
-      });
+              ...doc.payload.doc.data() as any
+            })
+          )
+        )
+      );
   }
+
+  borrarIngresoEgreso( uidItem: string ) {
+
+    const uid = this.authService.user.uid;
+    return this.firestore.doc(`${ uid }/ingresos-egresos/items/${ uidItem }`).delete();
+
+  }
+
 }

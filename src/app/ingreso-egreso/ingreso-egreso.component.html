@@ -12,8 +12,8 @@
               type="text"
               class="form-control"
               placeholder="Descripción"
-              name="descripcion"
               formControlName="descripcion"
+              name="descripcion"
             />
           </div>
 
@@ -23,8 +23,8 @@
               type="number"
               class="form-control"
               placeholder="Monto"
-              name="monto"
               formControlName="monto"
+              name="monto"
             />
             <p>Debe de ser un monto positivo</p>
           </div>
@@ -52,25 +52,31 @@
 
           <hr />
           <button
-            [disabled]="ingresoForm.invalid"
             type="submit"
             class="btn btn-success mr-2"
-            *ngIf="!cargado"
+            [disabled]="ingresoForm.invalid"
+            *ngIf="!cargando"
           >
             <i class="fa fa-save"></i>
-
             Agregar
           </button>
 
           <button
-            [disabled]="ingresoForm.invalid"
             type="submit"
             class="btn btn-success mr-2"
-            *ngIf="cargado"
+            [disabled]="true"
+            *ngIf="cargando"
           >
             <i class="fa fa-spin fa-sync"></i>
             Guardando...
           </button>
+
+          <!-- 
+                <button disabled class="btn btn-success mr-2">
+                  <i class="fa fa-spin fa-sync"></i>
+                  Espere por favor...
+                </button> 
+              -->
 
           <button type="reset" class="btn btn-light">Cancelar</button>
         </form>

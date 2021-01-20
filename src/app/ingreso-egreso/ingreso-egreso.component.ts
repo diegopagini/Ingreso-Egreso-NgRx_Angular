@@ -1,12 +1,13 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Store } from "@ngrx/store";
-import { Subscription } from "rxjs";
-import Swal from "sweetalert2";
-import { AppState } from "../app.reducer";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { IngresoEgreso } from "../models/ingreso-egreso.model";
 import { IngresoEgresoService } from "../services/ingreso-egreso.service";
+import Swal from "sweetalert2";
+
+import { Store } from "@ngrx/store";
+import { AppState } from "../app.reducer";
 import * as ui from "../shared/ui.actions";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-ingreso-egreso",
@@ -16,7 +17,7 @@ import * as ui from "../shared/ui.actions";
 export class IngresoEgresoComponent implements OnInit, OnDestroy {
   ingresoForm: FormGroup;
   tipo: string = "ingreso";
-  cargado: boolean = false;
+  cargando: boolean = false;
   loadingSubs: Subscription;
 
   constructor(
@@ -28,7 +29,7 @@ export class IngresoEgresoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadingSubs = this.store
       .select("ui")
-      .subscribe(({ isLoading }) => (this.cargado = isLoading));
+      .subscribe(({ isLoading }) => (this.cargando = isLoading));
 
     this.ingresoForm = this.fb.group({
       descripcion: ["", Validators.required],
@@ -46,14 +47,17 @@ export class IngresoEgresoComponent implements OnInit, OnDestroy {
     }
 
     this.store.dispatch(ui.isLoading());
+
     const { descripcion, monto } = this.ingresoForm.value;
+
     const ingresoEgreso = new IngresoEgreso(descripcion, monto, this.tipo);
+
     this.ingresoEgresoService
       .crearIngresoEgreso(ingresoEgreso)
       .then(() => {
         this.ingresoForm.reset();
         this.store.dispatch(ui.stopLoading());
-        Swal.fire("Registro Creado", descripcion, "success");
+        Swal.fire("Registro creado", descripcion, "success");
       })
       .catch((err) => {
         this.store.dispatch(ui.stopLoading());
